@@ -5,7 +5,7 @@ import Preloader from "./components/Preloader";
 
 import { getProductData } from "./store/features/manager/managerSlice";
 
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, Typography } from "@material-ui/core";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,7 +21,9 @@ function App() {
         <Preloader />
       ) : (
         <Container>
-          <h1>Mpharma Product Manager</h1>
+          <Typography variant="h3" align="center">
+            Mpharma Product Manager
+          </Typography>
           <ProductList />
         </Container>
       )}

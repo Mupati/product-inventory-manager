@@ -6,7 +6,6 @@ const initialState = {
 };
 
 // Asynchronously Load Initial Product Information
-
 export const getProductData = createAsyncThunk(
   "productManager/fetchProductData",
   async () => {
