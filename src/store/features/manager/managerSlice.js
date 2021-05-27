@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchProductData } from "./managerAPI";
+import { normalizeProductInfo } from "../../../utils";
 
 const initialState = {
   status: "loading",
@@ -37,7 +38,8 @@ const managerSlice = createSlice({
         state.status = "rejected";
       })
       .addCase(getProductData.fulfilled, (state, action) => {
-        console.log(action.payload);
+        const normalizedData = normalizeProductInfo(action.payload.products);
+        console.log(normalizedData);
         state.status = "idle";
       });
   },
