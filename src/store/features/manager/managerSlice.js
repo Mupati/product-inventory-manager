@@ -38,7 +38,7 @@ const managerSlice = createSlice({
         state.status = "rejected";
       })
       .addCase(getProductData.fulfilled, (state, action) => {
-        console.log(action.data);
+        console.log(action.payload);
         state.status = "idle";
       });
   },
