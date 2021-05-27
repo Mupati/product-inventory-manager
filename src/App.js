@@ -1,7 +1,8 @@
 import React from "react";
+import { Box } from "@material-ui/core";
 
 function App() {
-  return <h1>Learn React</h1>;
+  return <Box>Mpharma Product Manager</Box>;
 }
 
 export default App;
