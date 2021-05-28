@@ -5,7 +5,7 @@ import EmptyInventory from "./EmptyInventory";
 import ProductForm from "./ProductForm";
 import Product from "./Product";
 
-import { Button } from "@material-ui/core";
+import { Button, Box } from "@material-ui/core";
 import {
   selectProducts,
   showProductForm,
@@ -19,9 +19,14 @@ function ProductList() {
 
   return (
     <Fragment>
-      <Button onClick={() => dispatch(showProductForm("create"))}>
-        Add New Product
-      </Button>
+      <Box textAlign="center" mb={2} mt={5}>
+        <Button
+          variant="contained"
+          onClick={() => dispatch(showProductForm("create"))}
+        >
+          Add New Product
+        </Button>
+      </Box>
       {/* Product Editing and Creation Drawer */}
       <ProductForm />
       {/* Product Deletion Confirmation Dialog Box */}

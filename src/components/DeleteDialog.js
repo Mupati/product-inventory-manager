@@ -47,7 +47,11 @@ function DeleteDialog() {
         >
           Cancel
         </Button>
-        <Button onClick={() => dispatch(deleteProduct())} color="primary">
+        <Button
+          onClick={() => dispatch(deleteProduct())}
+          color="secondary"
+          variant="contained"
+        >
           Confirm
         </Button>
       </DialogActions>

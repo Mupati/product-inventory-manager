@@ -1,7 +1,7 @@
 import { compareDesc, format, isEqual, parseISO } from "date-fns";
 import { normalize, schema } from "normalizr";
 
-export const formattedDate = () =>
+export const formattedNowDate = () =>
   format(new Date(Date.now()), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
 
 export const normalizeProductInfo = (productInfo) => {

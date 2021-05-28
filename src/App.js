@@ -24,8 +24,8 @@ function App() {
         <Preloader />
       ) : (
         <Container>
-          <Typography variant="h3" align="center">
-            Mpharma Product Manager
+          <Typography variant="h4" align="center" style={{ marginTop: 20 }}>
+            Mpharma Inventory Manager
           </Typography>
           <ProductList />
         </Container>

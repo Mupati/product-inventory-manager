@@ -22,9 +22,8 @@ const useStyles = makeStyles({
   root: {
     maxWidth: 400,
     marginBottom: 20,
-  },
-  media: {
-    height: 140,
+    marginRight: "auto",
+    marginLeft: "auto",
   },
 });
 
@@ -57,7 +56,7 @@ function Product({ product }) {
         <Typography gutterBottom variant="h5" component="h2">
           {product.name}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body1" color="textPrimary" component="p">
           GHs {latestPriceData[0].price.toFixed(2)}
         </Typography>
       </CardContent>
@@ -66,13 +65,15 @@ function Product({ product }) {
         <Button
           size="small"
           color="primary"
+          variant="contained"
           onClick={() => handleProductEdit()}
         >
           Edit
         </Button>
         <Button
           size="small"
-          color="primary"
+          color="secondary"
+          variant="outlined"
           onClick={() => handleProductDelete()}
         >
           Delete

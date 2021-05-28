@@ -17,7 +17,7 @@ import {
   editProduct,
   addProduct,
 } from "../store/features/manager/managerSlice";
-import { formattedDate } from "../utils";
+import { formattedNowDate } from "../utils";
 
 function ProductForm() {
   const dispatch = useDispatch();
@@ -40,13 +40,13 @@ function ProductForm() {
 
   const handleSubmission = () => {
     if (action === "create") {
-      dispatch(addProduct({ ...formData, date: formattedDate() }));
+      dispatch(addProduct({ ...formData, date: formattedNowDate() }));
     } else {
       dispatch(
         editProduct({
           ...formData,
           id: productToEdit.id,
-          date: formattedDate(),
+          date: formattedNowDate(),
         })
       );
     }
@@ -65,6 +65,8 @@ function ProductForm() {
     dispatch(hideProductForm());
   };
 
+  const isValidInputs = Number(formData.price) > 0 && formData.name !== "";
+
   useEffect(() => {
     if (action === "edit") {
       setFormData({
@@ -76,8 +78,17 @@ function ProductForm() {
 
   return (
     <Drawer anchor="right" open={isFormVisible} onClose={handleDrawerClose}>
-      <Box display="flex" flexDirection="column" justifyContent="center">
-        <Typography align="center">{labelText}</Typography>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        width="300px"
+        px={2}
+        mt={5}
+      >
+        <Typography align="center" variant="h6">
+          {labelText}
+        </Typography>
         <FormControl style={{ marginBottom: 15 }}>
           <InputLabel htmlFor="name">Name</InputLabel>
           <Input
@@ -86,6 +97,7 @@ function ProductForm() {
             onChange={onChange}
             aria-describedby="product-name"
             required={true}
+            variant="outlined"
           />
         </FormControl>
 
@@ -106,6 +118,7 @@ function ProductForm() {
           color="primary"
           variant="contained"
           style={{ marginTop: 10 }}
+          disabled={!isValidInputs}
         >
           {labelText}
         </Button>
