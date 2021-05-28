@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { compareDesc, format, isEqual, parseISO } from "date-fns";
 import { normalize, schema } from "normalizr";
 
 export const formattedDate = () =>
@@ -14,3 +14,13 @@ export const normalizeProductInfo = (productInfo) => {
   });
   return normalize(productInfo, [product]);
 };
+
+// Sort dates and return the latest
+export const getLatestDate = (dates) => {
+  const latestDate = dates.map((date) => parseISO(date)).sort(compareDesc)[0];
+  return latestDate;
+};
+
+// Compare Parsed and UnparsedDates
+export const checkDateEquality = (unparsedDate, parsedDate) =>
+  isEqual(parseISO(unparsedDate), parsedDate);

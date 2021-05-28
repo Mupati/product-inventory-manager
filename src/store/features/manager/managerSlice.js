@@ -4,6 +4,8 @@ import { normalizeProductInfo } from "../../../utils";
 
 const initialState = {
   status: "loading",
+  products: null,
+  prices: null,
 };
 
 // Asynchronously Load Initial Product Information
@@ -39,10 +41,19 @@ const managerSlice = createSlice({
       })
       .addCase(getProductData.fulfilled, (state, action) => {
         const normalizedData = normalizeProductInfo(action.payload.products);
-        console.log(normalizedData);
+        state.products = normalizedData.entities.products;
+        state.prices = normalizedData.entities.prices;
+
         state.status = "idle";
       });
   },
 });
+
+// Actions
+export const { addProduct, editProduct, deleteProduct } = managerSlice.actions;
+
+// Selectors
+export const selectProducts = (state) => state.productManager.products;
+export const selectPrices = (state) => state.productManager.prices;
 
 export default managerSlice.reducer;
