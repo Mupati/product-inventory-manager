@@ -27,6 +27,7 @@ const managerSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action) => {
+      // TODO: Check for duplicates when the new Product name being added already exists
       const priceIds = Object.keys(state.prices);
       const lastPriceId = priceIds[priceIds.length - 1];
       const newPriceId = Number(lastPriceId) + 1;
@@ -54,7 +55,24 @@ const managerSlice = createSlice({
       state.isVisibleForm = false;
     },
     editProduct: (state, action) => {
-      console.log(action.payload);
+      const priceIds = Object.keys(state.prices);
+      const lastPriceId = priceIds[priceIds.length - 1];
+      const newPriceId = Number(lastPriceId) + 1;
+
+      Object.assign(state.prices, {
+        [newPriceId]: {
+          id: newPriceId,
+          price: Number(action.payload.price),
+          date: action.payload.date,
+        },
+      });
+
+      // Update the price and name with new data and add the new priceId to the prices array
+      state.products[action.payload.id] = {
+        ...state.products[action.payload.id],
+        name: action.payload.name,
+        prices: state.products[action.payload.id]["prices"].concat(newPriceId),
+      };
 
       state.formAction = "";
       state.isVisibleForm = false;

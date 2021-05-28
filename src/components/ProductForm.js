@@ -46,6 +46,7 @@ function ProductForm() {
         editProduct({
           ...formData,
           id: productToEdit.id,
+          date: formattedDate(),
         })
       );
     }
