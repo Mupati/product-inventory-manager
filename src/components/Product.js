@@ -42,12 +42,11 @@ function Product({ product }) {
   );
 
   const handleProductEdit = () => {
-    dispatch(setProductToEdit("kofi"));
+    dispatch(setProductToEdit({ ...product, price: latestPriceData[0].price }));
     dispatch(showProductForm("edit"));
   };
 
   const handleProductDelete = () => {
-    console.log(product);
     dispatch(setProductToDelete(product.id));
     dispatch(showDeleteDialog());
   };

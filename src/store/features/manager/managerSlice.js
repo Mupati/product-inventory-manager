@@ -6,10 +6,8 @@ const initialState = {
   status: "loading",
   products: {},
   prices: {},
-  isVisibleForm: {
-    status: false,
-    task: "",
-  },
+  isVisibleForm: false,
+  formAction: "",
   productToEdit: {},
   isVisibleDeleteDialog: false,
   productToDelete: "",
@@ -29,23 +27,50 @@ const managerSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action) => {
-      console.log(action.payload);
+      const priceIds = Object.keys(state.prices);
+      const lastPriceId = priceIds[priceIds.length - 1];
+      const newPriceId = Number(lastPriceId) + 1;
+
+      Object.assign(state.prices, {
+        [newPriceId]: {
+          id: newPriceId,
+          price: Number(action.payload.price),
+          date: action.payload.date,
+        },
+      });
+
+      const productIds = Object.keys(state.products);
+      const lastProductId = productIds[productIds.length - 1];
+      const newProductId = Number(lastProductId) + 1;
+      Object.assign(state.products, {
+        [newProductId]: {
+          id: newProductId,
+          name: action.payload.name,
+          prices: [newPriceId],
+        },
+      });
+
+      state.formAction = "";
+      state.isVisibleForm = false;
     },
     editProduct: (state, action) => {
       console.log(action.payload);
+
+      state.formAction = "";
+      state.isVisibleForm = false;
     },
     deleteProduct: (state, action) => {
       delete state.products[Number(state.productToDelete)];
       state.isVisibleDeleteDialog = false;
     },
     showProductForm: (state, action) => {
-      console.log("I was called");
-      state.isVisibleForm.status = true;
-      state.isVisibleForm.task = action.payload.task;
+      state.formAction = action.payload;
+      state.isVisibleForm = true;
     },
     hideProductForm: (state, action) => {
-      state.isVisibleForm.status = false;
-      state.isVisibleForm.task = "";
+      state.isVisibleForm = false;
+      state.formAction = "";
+      state.productToEdit = {};
     },
     showDeleteDialog: (state, action) => {
       state.isVisibleDeleteDialog = true;
@@ -54,7 +79,7 @@ const managerSlice = createSlice({
       state.isVisibleDeleteDialog = false;
     },
     setProductToEdit: (state, action) => {
-      console.log(action.payload);
+      state.productToEdit = action.payload;
     },
     setProductToDelete: (state, action) => {
       state.productToDelete = action.payload;
@@ -97,15 +122,16 @@ export const {
 export const selectLoadingStatus = (state) => state.productManager.status;
 export const selectProducts = (state) => state.productManager.products;
 export const selectPrices = (state) => state.productManager.prices;
-export const selectVisibleFormStatus = (state) =>
-  state.productManager.isVisibleForm.status;
-export const selectVisibleFormTask = (state) =>
-  state.productManager.isVisibleForm.task;
+export const selectVisibleForm = (state) => state.productManager.isVisibleForm;
+export const selectFormAction = (state) => state.productManager.formAction;
 
 export const selectVisibleDeleteDialog = (state) =>
   state.productManager.isVisibleDeleteDialog;
 
 export const selectProductToDelete = (state) =>
   state.productManager.productToDelete;
+
+export const selectProductToEdit = (state) =>
+  state.productManager.productToEdit;
 
 export default managerSlice.reducer;

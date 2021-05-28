@@ -12,7 +12,7 @@ import { Box, Container, Typography } from "@material-ui/core";
 
 function App() {
   const dispatch = useDispatch();
-  const status = useSelector(selectLoadingStatus);
+  const loadingStatus = useSelector(selectLoadingStatus);
 
   useEffect(() => {
     dispatch(getProductData());
@@ -20,7 +20,7 @@ function App() {
 
   return (
     <Box>
-      {status !== "idle" ? (
+      {loadingStatus !== "idle" ? (
         <Preloader />
       ) : (
         <Container>
