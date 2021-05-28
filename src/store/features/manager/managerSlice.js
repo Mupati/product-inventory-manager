@@ -115,9 +115,6 @@ const managerSlice = createSlice({
         const normalizedData = normalizeProductInfo(action.payload.products);
         state.products = normalizedData.entities.products;
         state.prices = normalizedData.entities.prices;
-
-        console.log(state.products);
-        console.log(state.prices);
         state.status = "idle";
       });
   },
