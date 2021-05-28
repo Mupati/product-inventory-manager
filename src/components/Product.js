@@ -12,7 +12,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { getLatestDate, checkDateEquality } from "../utils";
 import {
   selectPrices,
+  setProductToDelete,
   setProductToEdit,
+  showDeleteDialog,
   showProductForm,
 } from "../store/features/manager/managerSlice";
 
@@ -44,6 +46,12 @@ function Product({ product }) {
     dispatch(showProductForm("edit"));
   };
 
+  const handleProductDelete = () => {
+    console.log(product);
+    dispatch(setProductToDelete(product.id));
+    dispatch(showDeleteDialog());
+  };
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -63,7 +71,11 @@ function Product({ product }) {
         >
           Edit
         </Button>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => handleProductDelete()}
+        >
           Delete
         </Button>
       </CardActions>

@@ -10,6 +10,7 @@ import {
   selectProducts,
   showProductForm,
 } from "../store/features/manager/managerSlice";
+import DeleteDialog from "./DeleteDialog";
 
 function ProductList() {
   const dispatch = useDispatch();
@@ -21,7 +22,11 @@ function ProductList() {
       <Button onClick={() => dispatch(showProductForm("create"))}>
         Add New Product
       </Button>
+      {/* Product Editing and Creation Drawer */}
       <ProductForm />
+      {/* Product Deletion Confirmation Dialog Box */}
+      <DeleteDialog />
+
       {productKeys.length > 0 ? (
         productKeys.map((productKey) => (
           <Product key={productKey} product={products[productKey]} />

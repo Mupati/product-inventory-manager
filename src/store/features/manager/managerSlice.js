@@ -11,6 +11,8 @@ const initialState = {
     task: "",
   },
   productToEdit: {},
+  isVisibleDeleteDialog: false,
+  productToDelete: "",
 };
 
 // Asynchronously Load Initial Product Information
@@ -33,7 +35,8 @@ const managerSlice = createSlice({
       console.log(action.payload);
     },
     deleteProduct: (state, action) => {
-      console.log(action.payload);
+      delete state.products[Number(state.productToDelete)];
+      state.isVisibleDeleteDialog = false;
     },
     showProductForm: (state, action) => {
       console.log("I was called");
@@ -44,8 +47,17 @@ const managerSlice = createSlice({
       state.isVisibleForm.status = false;
       state.isVisibleForm.task = "";
     },
+    showDeleteDialog: (state, action) => {
+      state.isVisibleDeleteDialog = true;
+    },
+    hideDeleteDialog: (state, action) => {
+      state.isVisibleDeleteDialog = false;
+    },
     setProductToEdit: (state, action) => {
       console.log(action.payload);
+    },
+    setProductToDelete: (state, action) => {
+      state.productToDelete = action.payload;
     },
   },
   extraReducers: (builders) => {
@@ -60,6 +72,9 @@ const managerSlice = createSlice({
         const normalizedData = normalizeProductInfo(action.payload.products);
         state.products = normalizedData.entities.products;
         state.prices = normalizedData.entities.prices;
+
+        console.log(state.products);
+        console.log(state.prices);
         state.status = "idle";
       });
   },
@@ -73,6 +88,9 @@ export const {
   showProductForm,
   hideProductForm,
   setProductToEdit,
+  setProductToDelete,
+  showDeleteDialog,
+  hideDeleteDialog,
 } = managerSlice.actions;
 
 // Selectors
@@ -83,5 +101,11 @@ export const selectVisibleFormStatus = (state) =>
   state.productManager.isVisibleForm.status;
 export const selectVisibleFormTask = (state) =>
   state.productManager.isVisibleForm.task;
+
+export const selectVisibleDeleteDialog = (state) =>
+  state.productManager.isVisibleDeleteDialog;
+
+export const selectProductToDelete = (state) =>
+  state.productManager.productToDelete;
 
 export default managerSlice.reducer;
