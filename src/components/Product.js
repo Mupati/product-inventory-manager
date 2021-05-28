@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Card,
   CardActions,
@@ -10,10 +10,15 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 import { getLatestDate, checkDateEquality } from "../utils";
+import {
+  selectPrices,
+  setProductToEdit,
+  showProductForm,
+} from "../store/features/manager/managerSlice";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 300,
+    maxWidth: 400,
     marginBottom: 20,
   },
   media: {
@@ -23,7 +28,9 @@ const useStyles = makeStyles({
 
 function Product({ product }) {
   const classes = useStyles();
-  const allPrices = useSelector((state) => state.productManager.prices);
+
+  const dispatch = useDispatch();
+  const allPrices = useSelector(selectPrices);
 
   const productPriceData = product.prices.map((priceId) => allPrices[priceId]);
   const priceDates = productPriceData.map((priceData) => priceData.date);
@@ -31,6 +38,11 @@ function Product({ product }) {
   const latestPriceData = productPriceData.filter((priceData) =>
     checkDateEquality(priceData.date, getLatestDate(priceDates))
   );
+
+  const handleProductEdit = () => {
+    dispatch(setProductToEdit("kofi"));
+    dispatch(showProductForm("edit"));
+  };
 
   return (
     <Card className={classes.root}>
@@ -44,7 +56,11 @@ function Product({ product }) {
       </CardContent>
 
       <CardActions>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => handleProductEdit()}
+        >
           Edit
         </Button>
         <Button size="small" color="primary">

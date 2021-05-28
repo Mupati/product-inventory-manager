@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
-import { Box, CircularProgress, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { selectLoadingStatus } from "../store/features/manager/managerSlice";
+
+import { Box, CircularProgress, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -12,7 +14,7 @@ const useStyles = makeStyles({
 
 function Preloader() {
   const classes = useStyles();
-  const status = useSelector((state) => state.productManager.status);
+  const status = useSelector(selectLoadingStatus);
 
   return (
     <Box

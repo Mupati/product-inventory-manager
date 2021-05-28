@@ -4,8 +4,13 @@ import { normalizeProductInfo } from "../../../utils";
 
 const initialState = {
   status: "loading",
-  products: null,
-  prices: null,
+  products: {},
+  prices: {},
+  isVisibleForm: {
+    status: false,
+    task: "",
+  },
+  productToEdit: {},
 };
 
 // Asynchronously Load Initial Product Information
@@ -30,6 +35,18 @@ const managerSlice = createSlice({
     deleteProduct: (state, action) => {
       console.log(action.payload);
     },
+    showProductForm: (state, action) => {
+      console.log("I was called");
+      state.isVisibleForm.status = true;
+      state.isVisibleForm.task = action.payload.task;
+    },
+    hideProductForm: (state, action) => {
+      state.isVisibleForm.status = false;
+      state.isVisibleForm.task = "";
+    },
+    setProductToEdit: (state, action) => {
+      console.log(action.payload);
+    },
   },
   extraReducers: (builders) => {
     builders
@@ -43,17 +60,28 @@ const managerSlice = createSlice({
         const normalizedData = normalizeProductInfo(action.payload.products);
         state.products = normalizedData.entities.products;
         state.prices = normalizedData.entities.prices;
-
         state.status = "idle";
       });
   },
 });
 
 // Actions
-export const { addProduct, editProduct, deleteProduct } = managerSlice.actions;
+export const {
+  addProduct,
+  editProduct,
+  deleteProduct,
+  showProductForm,
+  hideProductForm,
+  setProductToEdit,
+} = managerSlice.actions;
 
 // Selectors
+export const selectLoadingStatus = (state) => state.productManager.status;
 export const selectProducts = (state) => state.productManager.products;
 export const selectPrices = (state) => state.productManager.prices;
+export const selectVisibleFormStatus = (state) =>
+  state.productManager.isVisibleForm.status;
+export const selectVisibleFormTask = (state) =>
+  state.productManager.isVisibleForm.task;
 
 export default managerSlice.reducer;
