@@ -13,13 +13,15 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+import hardSet from "redux-persist/es/stateReconciler/hardSet";
 import storage from "redux-persist/lib/storage";
 import managerReducer from "./features/manager/managerSlice";
 
 const persistConfig = {
-  key: "root",
+  key: "manager",
   version: 1,
   storage,
+  stateReconciler: hardSet,
 };
 
 const reducers = combineReducers({
@@ -28,7 +30,7 @@ const reducers = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware({
     serializableCheck: {
@@ -37,4 +39,6 @@ export const store = configureStore({
   }),
 });
 
-export const persistor = persistStore(store);
+let persistor = persistStore(store);
+
+export { store, persistor };

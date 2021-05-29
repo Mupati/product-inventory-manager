@@ -6,11 +6,12 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { CssBaseline } from "@material-ui/core";
 import { PersistGate } from "redux-persist/integration/react";
+import Preloader from "./components/Preloader";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<Preloader />} persistor={persistor}>
         <CssBaseline />
         <App />
       </PersistGate>

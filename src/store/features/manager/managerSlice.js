@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchProductData } from "./managerAPI";
 import { normalizeProductInfo } from "../../../utils";
 
-const initialState = {
+export const initialState = {
   status: "loading",
   products: {},
   prices: {},
@@ -11,6 +11,7 @@ const initialState = {
   productToEdit: {},
   isVisibleDeleteDialog: false,
   productToDelete: "",
+  isProductInInventory: false,
 };
 
 // Asynchronously Load Initial Product Information
@@ -23,42 +24,61 @@ export const getProductData = createAsyncThunk(
 );
 
 const managerSlice = createSlice({
-  name: "productMnager",
+  name: "productManager",
   initialState,
   reducers: {
     addProduct: (state, action) => {
-      // TODO: Check for duplicates when the new Product name being added already exists
-      const priceIds = Object.keys(state.prices);
-      const lastPriceId = priceIds[priceIds.length - 1];
-      const newPriceId = Number(lastPriceId) + 1;
-
-      Object.assign(state.prices, {
-        [newPriceId]: {
-          id: newPriceId,
-          price: Number(action.payload.price),
-          date: action.payload.date,
-        },
-      });
-
+      // Reset productInInventory before adding new one
+      // in case you are receiving feedback after trying to add an existing product
+      state.isProductInInventory = false;
       const productIds = Object.keys(state.products);
-      const lastProductId = productIds[productIds.length - 1];
-      const newProductId = Number(lastProductId) + 1;
-      Object.assign(state.products, {
-        [newProductId]: {
-          id: newProductId,
-          name: action.payload.name,
-          prices: [newPriceId],
-        },
-      });
 
-      state.formAction = "";
-      state.isVisibleForm = false;
+      // Check if the product being added already exists
+      const productAlreadyExists = productIds.some(
+        (id) => state.products[id].name === action.payload.name
+      );
+
+      if (productAlreadyExists) {
+        state.isProductInInventory = true;
+      } else {
+        // Add New Product's price
+        const priceIds = Object.keys(state.prices);
+        // The key/id for the new price is the last id/key + 1
+        const newPriceId = Number(priceIds[priceIds.length - 1]) + 1;
+        Object.assign(state.prices, {
+          [newPriceId]: {
+            id: newPriceId,
+            price: Number(action.payload.price),
+            date: action.payload.date,
+          },
+        });
+
+        // Add the new product name to the products state
+        // and add the id of it's price to the prices array of the product
+
+        // The key/id for the new product is the last id/key + 1
+        // When the product list is empty, set the newProductId to 1
+        const newProductId =
+          productIds.length === 0
+            ? 1
+            : Number(productIds[productIds.length - 1]) + 1;
+        Object.assign(state.products, {
+          [newProductId]: {
+            id: newProductId,
+            name: action.payload.name,
+            prices: [newPriceId],
+          },
+        });
+
+        // reset form states
+        state.formAction = "";
+        state.isVisibleForm = false;
+      }
     },
     editProduct: (state, action) => {
       const priceIds = Object.keys(state.prices);
-      const lastPriceId = priceIds[priceIds.length - 1];
-      const newPriceId = Number(lastPriceId) + 1;
-
+      // The key/id for the new price is the last id/key + 1
+      const newPriceId = Number(priceIds[priceIds.length - 1]) + 1;
       Object.assign(state.prices, {
         [newPriceId]: {
           id: newPriceId,
@@ -73,7 +93,7 @@ const managerSlice = createSlice({
         name: action.payload.name,
         prices: state.products[action.payload.id]["prices"].concat(newPriceId),
       };
-
+      // reset form states
       state.formAction = "";
       state.isVisibleForm = false;
     },
@@ -89,6 +109,7 @@ const managerSlice = createSlice({
       state.isVisibleForm = false;
       state.formAction = "";
       state.productToEdit = {};
+      state.isProductInInventory = false;
     },
     showDeleteDialog: (state, action) => {
       state.isVisibleDeleteDialog = true;
@@ -139,7 +160,6 @@ export const selectProducts = (state) => state.productManager.products;
 export const selectPrices = (state) => state.productManager.prices;
 export const selectVisibleForm = (state) => state.productManager.isVisibleForm;
 export const selectFormAction = (state) => state.productManager.formAction;
-
 export const selectVisibleDeleteDialog = (state) =>
   state.productManager.isVisibleDeleteDialog;
 
@@ -148,5 +168,8 @@ export const selectProductToDelete = (state) =>
 
 export const selectProductToEdit = (state) =>
   state.productManager.productToEdit;
+
+export const selectProductInInventory = (state) =>
+  state.productManager.isProductInInventory;
 
 export default managerSlice.reducer;

@@ -14,9 +14,13 @@ function App() {
   const dispatch = useDispatch();
   const loadingStatus = useSelector(selectLoadingStatus);
 
+  // API call must run only once.
+  // This runs the first time the application is opened. Persisted state is null
+  const persistedState = localStorage.getItem("persist:manager");
+
   useEffect(() => {
-    dispatch(getProductData());
-  }, [dispatch]);
+    if (!persistedState) dispatch(getProductData());
+  }, [dispatch, persistedState]);
 
   return (
     <Box>

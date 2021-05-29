@@ -1,21 +1,21 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Box, Button, Typography } from "@material-ui/core";
-import { showProductForm } from "../store/features/manager/managerSlice";
+import { Box, Typography } from "@material-ui/core";
 
 function EmptyInventory() {
-  const dispatch = useDispatch();
   return (
-    <Box>
-      <Typography gutterBottom variant="h5" component="h2">
+    <Box mt={8}>
+      <Typography gutterBottom variant="h5" component="h2" align="center">
         Empty Inventory
       </Typography>
-      <Typography variant="body2" color="textSecondary" component="p">
-        There are no products in your inventory. This needs immediate attention
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        component="p"
+        align="center"
+      >
+        There are no products in your inventory. This needs immediate attention.
+        Add new products
       </Typography>
-      <Button onClick={() => dispatch(showProductForm("create"))}>
-        ReStock Now
-      </Button>
     </Box>
   );
 }

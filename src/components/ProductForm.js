@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   FormControl,
-  InputLabel,
+  FormHelperText,
   Input,
+  InputLabel,
   Button,
   Drawer,
   Typography,
@@ -16,6 +17,7 @@ import {
   selectProductToEdit,
   editProduct,
   addProduct,
+  selectProductInInventory,
 } from "../store/features/manager/managerSlice";
 import { formattedNowDate } from "../utils";
 
@@ -24,6 +26,7 @@ function ProductForm() {
   const isFormVisible = useSelector(selectVisibleForm);
   const action = useSelector(selectFormAction);
   const productToEdit = useSelector(selectProductToEdit);
+  const productAlreadyExists = useSelector(selectProductInInventory);
   const labelText = action === "create" ? "Add Product" : "Edit Product";
 
   const [formData, setFormData] = useState({
@@ -65,6 +68,7 @@ function ProductForm() {
     dispatch(hideProductForm());
   };
 
+  // Validate form inputs
   const isValidInputs = Number(formData.price) > 0 && formData.name !== "";
 
   useEffect(() => {
@@ -98,7 +102,11 @@ function ProductForm() {
             aria-describedby="product-name"
             required={true}
             variant="outlined"
+            error={productAlreadyExists}
           />
+          <FormHelperText id="my-helper-text">
+            {productAlreadyExists && "Product already exists. Edit instead"}
+          </FormHelperText>
         </FormControl>
 
         <FormControl style={{ marginBottom: 15 }}>
