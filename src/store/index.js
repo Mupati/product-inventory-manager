@@ -13,7 +13,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import hardSet from "redux-persist/es/stateReconciler/hardSet";
 import storage from "redux-persist/lib/storage";
 import managerReducer from "./features/manager/managerSlice";
 
@@ -21,7 +20,6 @@ const persistConfig = {
   key: "manager",
   version: 1,
   storage,
-  stateReconciler: hardSet,
 };
 
 const reducers = combineReducers({

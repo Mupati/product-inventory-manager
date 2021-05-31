@@ -23,11 +23,12 @@ function ProductList() {
         <Button
           variant="contained"
           onClick={() => dispatch(showProductForm("create"))}
+          data-testid="add-btn"
         >
           Add New Product
         </Button>
       </Box>
-      {/* Product Editing and Creation Drawer */}
+      {/* Product Editing and Addition Drawer */}
       <ProductForm />
       {/* Product Deletion Confirmation Dialog Box */}
       <DeleteDialog />

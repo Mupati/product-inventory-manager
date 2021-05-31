@@ -44,6 +44,7 @@ function DeleteDialog() {
           autoFocus
           onClick={() => dispatch(hideDeleteDialog())}
           color="primary"
+          data-testid="cancel-btn"
         >
           Cancel
         </Button>
@@ -51,6 +52,7 @@ function DeleteDialog() {
           onClick={() => dispatch(deleteProduct())}
           color="secondary"
           variant="contained"
+          data-testid="confirm-btn"
         >
           Confirm
         </Button>

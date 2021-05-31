@@ -103,6 +103,9 @@ function ProductForm() {
             required={true}
             variant="outlined"
             error={productAlreadyExists}
+            inputProps={{
+              "data-testid": "product-name",
+            }}
           />
           <FormHelperText id="my-helper-text">
             {productAlreadyExists && "Product already exists. Edit instead"}
@@ -118,6 +121,9 @@ function ProductForm() {
             type="number"
             aria-describedby="product-price"
             required={true}
+            inputProps={{
+              "data-testid": "product-price",
+            }}
           />
         </FormControl>
 
@@ -127,6 +133,7 @@ function ProductForm() {
           variant="contained"
           style={{ marginTop: 10 }}
           disabled={!isValidInputs}
+          data-testid="submit-btn"
         >
           {labelText}
         </Button>

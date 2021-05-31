@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 
 function Preloader() {
   const classes = useStyles();
-  const status = useSelector(selectLoadingStatus);
+  const loadingStatus = useSelector(selectLoadingStatus);
 
   return (
     <Box
@@ -24,7 +24,7 @@ function Preloader() {
       alignItems="center"
       flexDirection="column"
     >
-      {status === "loading" ? (
+      {loadingStatus === "loading" ? (
         <Fragment>
           <h1>Loading...</h1>
           <CircularProgress />

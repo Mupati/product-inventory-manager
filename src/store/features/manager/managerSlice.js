@@ -123,6 +123,9 @@ const managerSlice = createSlice({
     setProductToDelete: (state, action) => {
       state.productToDelete = action.payload;
     },
+    setLoadingStatus: (state, action) => {
+      state.status = action.payload;
+    },
   },
   extraReducers: (builders) => {
     builders
@@ -152,6 +155,7 @@ export const {
   setProductToDelete,
   showDeleteDialog,
   hideDeleteDialog,
+  setLoadingStatus,
 } = managerSlice.actions;
 
 // Selectors

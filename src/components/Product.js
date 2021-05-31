@@ -51,7 +51,7 @@ function Product({ product }) {
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} data-testid="product-card">
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {product.name}
@@ -67,6 +67,7 @@ function Product({ product }) {
           color="primary"
           variant="contained"
           onClick={() => handleProductEdit()}
+          data-testid="edit-btn"
         >
           Edit
         </Button>
@@ -75,6 +76,7 @@ function Product({ product }) {
           color="secondary"
           variant="outlined"
           onClick={() => handleProductDelete()}
+          data-testid="delete-btn"
         >
           Delete
         </Button>
